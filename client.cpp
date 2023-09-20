@@ -23,27 +23,45 @@ int main()
 
 	char Message[1024] = { 0, };
 	int RecvByte = recv(ServerSocket, Message, sizeof(Message), 0);
-
-	cout << Message << endl;
-
-	char FirstNumberString[100] = { 0, };
-	char SecondNumberString[100] = { 0, };
+	int First = 0;
+	int Second = 0;
 	char Operator = 0;
 
-	memcpy(FirstNumberString, Message, 2);
-	memcpy(SecondNumberString, Message + 3, 2);
-	Operator = Message[2];
+	memcpy(&First, Message, 4);
+	memcpy(&Second, Message + 5, 4);
+	Operator = Message[4];
+	int Result = 0;
 
-	int FirstNumber = atoi(FirstNumberString);
-	int SecondNumber = atoi(SecondNumberString);
+	switch (Operator)
+	{
+	case '+':
+		Result = First + Second;
+		break;
+	case '-':
+		Result = First - Second;
+		break;
+	case '/':
+		Result = First / Second;
+		break;
+	case '*':
+		Result = First * Second;
+		break;
+	case '%':
+	default:
+		Result = First % Second;
+		break;
+	}
 
-	int ResultNumber = FirstNumber + SecondNumber;
+	cout << First;
+	cout << Message[4];
+	cout << Second;
+	cout << "=";
+	cout << Result << endl;
 
-	char Result[1024] = { 0, };
-	_itoa_s(ResultNumber, Result, 10);
+	char ResultMessaage[1024] = { 0, };
+	memcpy(ResultMessaage, &Result, sizeof(Result));
 
-	int SendByte = send(ServerSocket, Result, (int)strlen(Result), 0);
-
+	int SendByte = send(ServerSocket, ResultMessaage, 4, 0);
 	closesocket(ServerSocket);
 
 	WSACleanup();
