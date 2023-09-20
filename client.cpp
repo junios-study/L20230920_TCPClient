@@ -21,8 +21,28 @@ int main()
 
 	connect(ServerSocket, (SOCKADDR*)&ServerSock, sizeof(ServerSock));
 
+	char Message[1024] = { 0, };
+	int RecvByte = recv(ServerSocket, Message, sizeof(Message), 0);
 
+	cout << Message << endl;
 
+	char FirstNumberString[100] = { 0, };
+	char SecondNumberString[100] = { 0, };
+	char Operator = 0;
+
+	memcpy(FirstNumberString, Message, 2);
+	memcpy(SecondNumberString, Message + 3, 2);
+	Operator = Message[2];
+
+	int FirstNumber = atoi(FirstNumberString);
+	int SecondNumber = atoi(SecondNumberString);
+
+	int ResultNumber = FirstNumber + SecondNumber;
+
+	char Result[1024] = { 0, };
+	itoa(ResultNumber, Result, 10);
+
+	int SendByte = send(ServerSocket, Result, (int)strlen(Result), 0);
 
 	closesocket(ServerSocket);
 
