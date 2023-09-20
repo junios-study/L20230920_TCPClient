@@ -40,7 +40,7 @@ int main()
 	int ResultNumber = FirstNumber + SecondNumber;
 
 	char Result[1024] = { 0, };
-	itoa(ResultNumber, Result, 10);
+	_itoa_s(ResultNumber, Result, 10);
 
 	int SendByte = send(ServerSocket, Result, (int)strlen(Result), 0);
 
